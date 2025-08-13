@@ -1,0 +1,55 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Compiled binaries
+/daytona-sdk-go
+/examples/*/main
+/examples/*/api_test
+/examples/*/test_*
+/examples/*/basic
+/examples/*/comprehensive
+/examples/*/command_execution
+/examples/*/file_operations
+/examples/*/csv_generation
+/examples/*/pyspark
+
+# Go specific
+vendor/
+go.sum
+*.prof
+*.test
+coverage.txt
+coverage.html
+
+# IDE specific files
+.idea/
+*.swp
+*.swo
+*~
+.vscode/
+*.iml
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Documentation
+CLAUDE.md
+claude.md
+
+# Temporary files
+*.tmp
+*.log
+tmp/
+temp/
