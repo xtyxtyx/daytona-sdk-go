@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	api "github.com/daytonaio/apiclient"
+	api "github.com/daytonaio/daytona-sdk-go/apiclient"
 )
 
 // ExecuteCommandRequest wraps command execution parameters

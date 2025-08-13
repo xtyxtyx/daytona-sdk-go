@@ -23,14 +23,35 @@ The Daytona Go SDK provides a Go interface for interacting with the Daytona API,
 go get github.com/daytonaio/daytona-sdk-go
 ```
 
+The SDK includes the Daytona API client bundled within the `apiclient` directory, so no additional dependencies are needed.
+
+### Updating the API Client
+
+To update the bundled API client to the latest version from the Daytona repository:
+
+```bash
+./scripts/update-apiclient.sh
+```
+
+This script will fetch the latest API client from GitHub and update the local copy.
+
 ## Configuration
+
+The SDK automatically loads environment variables from `.env` files using [godotenv](https://github.com/joho/godotenv). 
 
 Create a `.env` file in your project root:
 
 ```bash
 DAYTONA_API_KEY=your_api_key_here
-DAYTONA_API_URL=https://app.daytona.io/api
+DAYTONA_API_URL=https://app.daytona.io/api  # Optional, defaults to this URL
 ```
+
+The SDK will automatically:
+- Load `.env` from the current directory
+- Load `../.env` from the parent directory (useful for examples)
+- Use system environment variables if no `.env` file exists
+
+No need to manually source the `.env` file or use `export` commands!
 
 ## Quick Start
 
@@ -46,7 +67,7 @@ import (
 )
 
 func main() {
-    // Create client (API key loaded from DAYTONA_API_KEY env var)
+    // Create client (automatically loads .env file)
     client, err := sdk.NewClient(&sdk.Config{})
     if err != nil {
         log.Fatal(err)
@@ -86,10 +107,11 @@ func main() {
 
 ## Examples
 
-The SDK includes comprehensive examples in the `examples/` directory:
+The SDK includes comprehensive examples in the `examples/` directory. All examples automatically load the `.env` file from the project root.
 
 ### Basic Operations
 ```bash
+# No need to source .env - it's loaded automatically!
 go run examples/basic/main.go
 ```
 Creates a sandbox, executes commands, manages files, and cleans up.

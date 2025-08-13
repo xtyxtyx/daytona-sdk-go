@@ -6,7 +6,8 @@ import (
 	"os"
 	"time"
 
-	api "github.com/daytonaio/apiclient"
+	api "github.com/daytonaio/daytona-sdk-go/apiclient"
+	"github.com/joho/godotenv"
 )
 
 // Config holds the SDK configuration
@@ -23,6 +24,16 @@ type Client struct {
 	config    *Config
 	apiClient *api.APIClient
 	ctx       context.Context
+}
+
+// init loads .env file automatically when the package is imported
+func init() {
+	// Try to load .env file if it exists
+	// Ignore error if file doesn't exist - environment variables might be set elsewhere
+	_ = godotenv.Load()
+	
+	// Also try to load from parent directory (useful for examples)
+	_ = godotenv.Load("../.env")
 }
 
 // NewClient creates a new Daytona SDK client

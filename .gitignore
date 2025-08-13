@@ -27,6 +27,8 @@
 # Go specific
 vendor/
 go.sum
+# Don't ignore the bundled API client
+!apiclient/
 *.prof
 *.test
 coverage.txt

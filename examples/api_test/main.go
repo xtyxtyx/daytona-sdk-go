@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	api "github.com/daytonaio/apiclient"
+	api "github.com/daytonaio/daytona-sdk-go/apiclient"
 )
 
 func main() {

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	sdk "github.com/daytonaio/daytona-sdk-go/pkg"
-	api "github.com/daytonaio/apiclient"
+	api "github.com/daytonaio/daytona-sdk-go/apiclient"
 )
 
 func main() {
