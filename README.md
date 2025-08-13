@@ -63,12 +63,12 @@ import (
     "fmt"
     "log"
     
-    sdk "github.com/daytonaio/daytona-sdk-go/pkg"
+    daytona "github.com/daytonaio/daytona-sdk-go/pkg"
 )
 
 func main() {
     // Create client (automatically loads .env file)
-    client, err := sdk.NewClient(&sdk.Config{})
+    client, err := daytona.NewClient(&daytona.Config{})
     if err != nil {
         log.Fatal(err)
     }
@@ -76,10 +76,10 @@ func main() {
     ctx := context.Background()
     
     // Create a sandbox
-    sandbox, err := client.CreateSandbox(ctx, &sdk.CreateSandboxRequest{
-        User:     sdk.StringPtr("daytona"),
-        Target:   sdk.StringPtr("eu"),
-        Snapshot: sdk.StringPtr("daytonaio/sandbox:0.4.3"),
+    sandbox, err := client.CreateSandbox(ctx, &daytona.CreateSandboxRequest{
+        User:     daytona.StringPtr("daytona"),
+        Target:   daytona.StringPtr("eu"),
+        Snapshot: daytona.StringPtr("daytonaio/sandbox:0.4.3"),
     })
     if err != nil {
         log.Fatal(err)
@@ -88,7 +88,7 @@ func main() {
     fmt.Printf("Created sandbox: %s\n", sandbox.GetId())
     
     // Execute a command
-    result, err := client.ExecuteCommand(ctx, sandbox.GetId(), &sdk.ExecuteCommandRequest{
+    result, err := client.ExecuteCommand(ctx, sandbox.GetId(), &daytona.ExecuteCommandRequest{
         Command: "echo 'Hello from Daytona!'",
     })
     if err != nil {
@@ -150,8 +150,8 @@ dockerfile := `FROM python:3.11-slim
 RUN pip install pandas numpy scikit-learn
 WORKDIR /workspace`
 
-sandbox, err := client.CreateSandbox(ctx, &sdk.CreateSandboxRequest{
-    DockerfileContent: sdk.StringPtr(dockerfile),
+sandbox, err := client.CreateSandbox(ctx, &daytona.CreateSandboxRequest{
+    DockerfileContent: daytona.StringPtr(dockerfile),
     // ... other options
 })
 ```
@@ -160,7 +160,7 @@ sandbox, err := client.CreateSandbox(ctx, &sdk.CreateSandboxRequest{
 
 ### Client Creation
 ```go
-client, err := sdk.NewClient(&sdk.Config{
+client, err := daytona.NewClient(&daytona.Config{
     APIKey:  "your_api_key",     // Optional, uses DAYTONA_API_KEY env var
     BaseURL: "https://...",      // Optional, uses DAYTONA_API_URL env var
     Timeout: 30 * time.Second,   // Optional, defaults to 30s

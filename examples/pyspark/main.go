@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	sdk "github.com/daytonaio/daytona-sdk-go/pkg"
+	daytona "github.com/daytonaio/daytona-sdk-go/pkg"
 )
 
 func main() {
@@ -15,7 +15,7 @@ func main() {
 
 	// Create SDK client
 	// API key is loaded from DAYTONA_API_KEY environment variable
-	client, err := sdk.NewClient(&sdk.Config{})
+	client, err := daytona.NewClient(&daytona.Config{})
 	if err != nil {
 		log.Fatal("Failed to create client:", err)
 	}
@@ -30,11 +30,11 @@ func main() {
 	fmt.Println("This will build a custom image with all dependencies pre-installed.")
 	fmt.Println("Initial build may take a few minutes, but subsequent uses will be faster.\n")
 	
-	createReq := &sdk.CreateSandboxRequest{
-		User:              sdk.StringPtr("daytona"),
-		Target:            sdk.StringPtr("eu"),
-		DockerfileContent: sdk.StringPtr(dockerfile),
-		Public:            sdk.BoolPtr(false),
+	createReq := &daytona.CreateSandboxRequest{
+		User:              daytona.StringPtr("daytona"),
+		Target:            daytona.StringPtr("eu"),
+		DockerfileContent: daytona.StringPtr(dockerfile),
+		Public:            daytona.BoolPtr(false),
 		Labels: map[string]string{
 			"created_by": "go_sdk",
 			"example":    "pyspark",
@@ -63,7 +63,7 @@ func main() {
 
 	// Verify PySpark is pre-installed and ready to use
 	fmt.Println("\nVerifying PySpark installation...")
-	verifyReq := &sdk.ExecuteCommandRequest{
+	verifyReq := &daytona.ExecuteCommandRequest{
 		Command: `python3 -c "from pyspark.sql import SparkSession; spark = SparkSession.builder.appName('test').getOrCreate(); print(f'✓ PySpark {spark.version} is ready!'); spark.stop()"`,
 		Timeout: 30.0,
 	}
@@ -87,7 +87,7 @@ func main() {
 
 	// Run the PySpark analysis - no installation needed, just import and use!
 	fmt.Println("\nRunning PySpark analysis (using pre-installed packages)...")
-	execReq := &sdk.ExecuteCommandRequest{
+	execReq := &daytona.ExecuteCommandRequest{
 		Command: "python3 /tmp/analysis.py 2>&1",
 		Cwd:     "/tmp",
 		Timeout: 120.0,  // Give more time for Spark operations

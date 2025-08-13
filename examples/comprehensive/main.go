@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	sdk "github.com/daytonaio/daytona-sdk-go/pkg"
+	daytona "github.com/daytonaio/daytona-sdk-go/pkg"
 	api "github.com/daytonaio/daytona-sdk-go/apiclient"
 )
 
@@ -15,11 +15,11 @@ func main() {
 
 	// Create SDK client with configuration
 	// API key is loaded from DAYTONA_API_KEY environment variable
-	config := &sdk.Config{
+	config := &daytona.Config{
 		Timeout: 30 * time.Second,
 	}
 
-	client, err := sdk.NewClient(config)
+	client, err := daytona.NewClient(config)
 	if err != nil {
 		log.Fatal("Failed to create client:", err)
 	}
@@ -43,11 +43,11 @@ func main() {
 
 	// Create a new sandbox
 	fmt.Println("\nCreating a new sandbox...")
-	createReq := &sdk.CreateSandboxRequest{
-		User:     sdk.StringPtr("daytona"),
-		Target:   sdk.StringPtr("eu"),
-		Snapshot: sdk.StringPtr("daytonaio/sandbox:0.4.3"),
-		Public:   sdk.BoolPtr(false),
+	createReq := &daytona.CreateSandboxRequest{
+		User:     daytona.StringPtr("daytona"),
+		Target:   daytona.StringPtr("eu"),
+		Snapshot: daytona.StringPtr("daytonaio/sandbox:0.4.3"),
+		Public:   daytona.BoolPtr(false),
 		Labels: map[string]string{
 			"project":     "sdk-demo",
 			"environment": "development",
@@ -58,7 +58,7 @@ func main() {
 			"DEBUG":       "true",
 			"API_VERSION": "v1",
 		},
-		AutoStopInterval: sdk.IntPtr(30), // Stop after 30 minutes of inactivity
+		AutoStopInterval: daytona.IntPtr(30), // Stop after 30 minutes of inactivity
 	}
 
 	sandbox, err := client.CreateSandbox(ctx, createReq)
@@ -187,7 +187,7 @@ clean:
 
 	for _, cmd := range commands {
 		fmt.Printf("\n%s:\n", cmd.desc)
-		result, err := client.ExecuteCommand(ctx, sandboxID, &sdk.ExecuteCommandRequest{
+		result, err := client.ExecuteCommand(ctx, sandboxID, &daytona.ExecuteCommandRequest{
 			Command: cmd.command,
 			Cwd:     cmd.cwd,
 			Timeout: 10.0,

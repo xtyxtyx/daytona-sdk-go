@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"log"
 
-	sdk "github.com/daytonaio/daytona-sdk-go/pkg"
+	daytona "github.com/daytonaio/daytona-sdk-go/pkg"
 )
 
 func main() {
 	// Create SDK client
 	// API key is loaded from DAYTONA_API_KEY environment variable
-	client, err := sdk.NewClient(&sdk.Config{})
+	client, err := daytona.NewClient(&daytona.Config{})
 	if err != nil {
 		log.Fatal("Failed to create client:", err)
 	}
@@ -26,7 +26,7 @@ func main() {
 
 	// Simple command
 	fmt.Println("Executing simple command...")
-	result, err := client.ExecuteCommand(ctx, sandboxID, &sdk.ExecuteCommandRequest{
+	result, err := client.ExecuteCommand(ctx, sandboxID, &daytona.ExecuteCommandRequest{
 		Command: "echo 'Hello, World!'",
 	})
 	if err != nil {
@@ -38,7 +38,7 @@ func main() {
 
 	// Command with working directory
 	fmt.Println("\nExecuting command with working directory...")
-	result, err = client.ExecuteCommand(ctx, sandboxID, &sdk.ExecuteCommandRequest{
+	result, err = client.ExecuteCommand(ctx, sandboxID, &daytona.ExecuteCommandRequest{
 		Command: "pwd",
 		Cwd:     "/tmp",
 	})
@@ -50,7 +50,7 @@ func main() {
 
 	// Command with timeout
 	fmt.Println("\nExecuting command with timeout...")
-	result, err = client.ExecuteCommand(ctx, sandboxID, &sdk.ExecuteCommandRequest{
+	result, err = client.ExecuteCommand(ctx, sandboxID, &daytona.ExecuteCommandRequest{
 		Command: "ls -la /",
 		Timeout: 5.0, // 5 seconds
 	})
@@ -77,7 +77,7 @@ sys.exit(0)
 		log.Printf("Failed to write Python file: %v\n", err)
 	} else {
 		// Execute the Python script
-		result, err = client.ExecuteCommand(ctx, sandboxID, &sdk.ExecuteCommandRequest{
+		result, err = client.ExecuteCommand(ctx, sandboxID, &daytona.ExecuteCommandRequest{
 			Command: "python3 /tmp/test.py",
 		})
 		if err != nil {
@@ -124,7 +124,7 @@ sys.exit(0)
 
 	// Complex command example
 	fmt.Println("\nExecuting complex command pipeline...")
-	result, err = client.ExecuteCommand(ctx, sandboxID, &sdk.ExecuteCommandRequest{
+	result, err = client.ExecuteCommand(ctx, sandboxID, &daytona.ExecuteCommandRequest{
 		Command: "echo 'Line 1\nLine 2\nLine 3' | grep 'Line' | wc -l",
 	})
 	if err != nil {

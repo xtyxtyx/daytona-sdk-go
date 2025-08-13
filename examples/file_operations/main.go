@@ -6,13 +6,13 @@ import (
 	"log"
 	"time"
 
-	sdk "github.com/daytonaio/daytona-sdk-go/pkg"
+	daytona "github.com/daytonaio/daytona-sdk-go/pkg"
 )
 
 func main() {
 	// Create SDK client
 	// API key is loaded from DAYTONA_API_KEY environment variable
-	client, err := sdk.NewClient(&sdk.Config{})
+	client, err := daytona.NewClient(&daytona.Config{})
 	if err != nil {
 		log.Fatal("Failed to create client:", err)
 	}
@@ -23,11 +23,11 @@ func main() {
 
 	// Create a new sandbox for file operations
 	fmt.Println("Creating sandbox for file operations...")
-	createReq := &sdk.CreateSandboxRequest{
-		User:     sdk.StringPtr("daytona"),
-		Target:   sdk.StringPtr("eu"),
-		Snapshot: sdk.StringPtr("daytonaio/sandbox:0.4.3"),
-		Public:   sdk.BoolPtr(false),
+	createReq := &daytona.CreateSandboxRequest{
+		User:     daytona.StringPtr("daytona"),
+		Target:   daytona.StringPtr("eu"),
+		Snapshot: daytona.StringPtr("daytonaio/sandbox:0.4.3"),
+		Public:   daytona.BoolPtr(false),
 		Labels: map[string]string{
 			"created_by": "go_sdk",
 			"example":    "file_operations",
