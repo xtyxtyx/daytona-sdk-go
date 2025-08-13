@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	daytona "github.com/daytonaio/daytona-sdk-go/pkg"
+	daytona "github.com/daytonaio/daytona-sdk-go"
 	api "github.com/daytonaio/daytona-sdk-go/apiclient"
 )
 

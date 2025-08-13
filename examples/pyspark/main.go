@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	daytona "github.com/daytonaio/daytona-sdk-go/pkg"
+	daytona "github.com/daytonaio/daytona-sdk-go"
 )
 
 func main() {
