@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
-	daytona "github.com/daytonaio/daytona-sdk-go"
-	api "github.com/daytonaio/daytona-sdk-go/apiclient"
+	daytona "github.com/PhilippBuschhaus/daytona-sdk-go"
+	api "github.com/PhilippBuschhaus/daytona-sdk-go/apiclient"
 )
 
 func main() {

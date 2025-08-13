@@ -32,7 +32,7 @@ mv "$TEMP_DIR" "$APICLIENT_DIR"
 
 # Update the go.mod to use local module path
 echo "Updating module path..."
-sed -i '' 's|module github.com/daytonaio/apiclient|module github.com/daytonaio/daytona-sdk-go/apiclient|' "$APICLIENT_DIR/go.mod"
+sed -i '' 's|module github.com/daytonaio/apiclient|module github.com/PhilippBuschhaus/daytona-sdk-go/apiclient|' "$APICLIENT_DIR/go.mod"
 
 # Clean up backup if successful
 if [ -d "$APICLIENT_DIR.backup" ]; then

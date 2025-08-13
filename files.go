@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	api "github.com/daytonaio/daytona-sdk-go/apiclient"
+	api "github.com/PhilippBuschhaus/daytona-sdk-go/apiclient"
 )
 
 // ReadFile reads a file from a sandbox

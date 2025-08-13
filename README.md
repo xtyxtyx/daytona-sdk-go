@@ -20,7 +20,7 @@ The Daytona Go SDK provides a Go interface for interacting with the Daytona API,
 ## Installation
 
 ```bash
-go get github.com/daytonaio/daytona-sdk-go
+go get github.com/PhilippBuschhaus/daytona-sdk-go
 ```
 
 The SDK includes the Daytona API client bundled within the `apiclient` directory, so no additional dependencies are needed.
@@ -63,7 +63,7 @@ import (
     "fmt"
     "log"
     
-    daytona "github.com/daytonaio/daytona-sdk-go"
+    daytona "github.com/PhilippBuschhaus/daytona-sdk-go"
 )
 
 func main() {

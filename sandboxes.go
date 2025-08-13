@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	api "github.com/daytonaio/daytona-sdk-go/apiclient"
+	api "github.com/PhilippBuschhaus/daytona-sdk-go/apiclient"
 )
 
 // CreateSandboxRequest wraps the API CreateSandbox model with helper methods

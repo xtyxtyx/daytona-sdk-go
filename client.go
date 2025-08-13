@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	api "github.com/daytonaio/daytona-sdk-go/apiclient"
+	api "github.com/PhilippBuschhaus/daytona-sdk-go/apiclient"
 	"github.com/joho/godotenv"
 )
 
