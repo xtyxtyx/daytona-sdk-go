@@ -30,9 +30,9 @@ fi
 echo "Installing new API client..."
 mv "$TEMP_DIR" "$APICLIENT_DIR"
 
-# Update the go.mod to use local module path
-echo "Updating module path..."
-sed -i '' 's|module github.com/daytonaio/apiclient|module github.com/PhilippBuschhaus/daytona-sdk-go/apiclient|' "$APICLIENT_DIR/go.mod"
+# Remove the go.mod file since apiclient is part of the main module
+echo "Removing apiclient go.mod..."
+rm -f "$APICLIENT_DIR/go.mod"
 
 # Clean up backup if successful
 if [ -d "$APICLIENT_DIR.backup" ]; then
