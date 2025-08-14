@@ -22,9 +22,20 @@ func main() {
 
 	ctx := context.Background()
 
-	// Build a custom image with PySpark pre-installed using declarative builder approach
+	// Build a custom image with PySpark pre-installed using declarative builder
 	// Following the pattern from the TypeScript SDK's Image class
-	dockerfile := buildPySparkImage()
+	image := daytona.DebianSlim("3.11").
+		AptInstall([]string{"openjdk-17-jre-headless", "procps"}).
+		Env("JAVA_HOME", "/usr/lib/jvm/java-17-openjdk-amd64").
+		PipInstall([]string{
+			"pyspark==3.5.0",
+			"pandas",
+			"numpy", 
+			"pyarrow",
+			"matplotlib",
+			"seaborn",
+		}).
+		Workdir("/workspace")
 
 	fmt.Println("Creating sandbox with pre-installed PySpark...")
 	fmt.Println("This will build a custom image with all dependencies pre-installed.")
@@ -32,7 +43,7 @@ func main() {
 	
 	createReq := &daytona.CreateSandboxRequest{
 		Target:            daytona.StringPtr("eu"), // Required: deployment region
-		DockerfileContent: daytona.StringPtr(dockerfile), // Custom image with PySpark
+		DockerfileContent: daytona.StringPtr(image.Build()), // Custom image with PySpark
 		
 		// Optional: Environment variables for Spark
 		Env: map[string]string{
@@ -141,39 +152,6 @@ func main() {
 	fmt.Println("All packages were pre-installed and ready to import immediately.")
 }
 
-// buildPySparkImage creates a Dockerfile with PySpark and dependencies pre-installed
-// Following the declarative builder pattern from the TypeScript SDK
-func buildPySparkImage() string {
-	// Using the builder pattern similar to Image.debianSlim().pipInstall()
-	commands := []string{
-		// Base image with Python
-		"FROM python:3.11-slim-bookworm",
-		
-		// Update and install system dependencies (following Image.debianSlim pattern)
-		"RUN apt-get update",
-		"RUN apt-get install -y gcc gfortran build-essential openjdk-17-jre-headless wget procps",
-		"RUN pip install --upgrade pip",
-		"RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections",
-		
-		// Set Java environment
-		"ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64",
-		
-		// Install PySpark and data science packages (equivalent to .pipInstall())
-		"RUN python -m pip install pyspark==3.5.0 pandas numpy pyarrow matplotlib seaborn",
-		
-		// Set working directory (equivalent to .workdir())
-		"WORKDIR /workspace",
-		
-		// Set environment variables (equivalent to .env())
-		"ENV PYSPARK_PYTHON=python3",
-		"ENV SPARK_LOCAL_IP=127.0.0.1",
-		
-		// Clean up
-		"RUN apt-get clean && rm -rf /var/lib/apt/lists/*",
-	}
-	
-	return strings.Join(commands, "\n") + "\n"
-}
 
 // generatePySparkScript creates a PySpark analysis that can immediately import and use PySpark
 func generatePySparkScript() string {

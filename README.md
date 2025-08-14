@@ -125,21 +125,58 @@ go run examples/basic/main.go
 go run examples/comprehensive/main.go
 ```
 
-## Custom Images
+## Declarative Image Builder
 
-Build custom sandbox environments with pre-installed packages:
+The SDK includes a powerful declarative builder for creating custom Docker images, similar to the TypeScript SDK:
+
+### Basic Usage
 
 ```go
-// Build a custom Dockerfile
-dockerfile := `FROM python:3.11-slim
-RUN pip install pandas numpy scikit-learn
-WORKDIR /workspace`
+// Use preset builders
+image := daytona.PythonDataScience("3.11")  // Includes numpy, pandas, scikit-learn, etc.
 
+// Or build custom images with method chaining
+image := daytona.DebianSlim("3.11").
+    AptInstall([]string{"postgresql-client"}).
+    PipInstall([]string{"fastapi", "uvicorn", "sqlalchemy"}).
+    Env("APP_ENV", "production").
+    Workdir("/app").
+    Expose(8000)
+
+// Create sandbox with the custom image
 sandbox, err := client.CreateSandbox(ctx, &daytona.CreateSandboxRequest{
-    DockerfileContent: daytona.StringPtr(dockerfile),
-    // ... other options
+    Target: daytona.StringPtr("eu"),
+    DockerfileContent: daytona.StringPtr(image.Build()),
 })
 ```
+
+### Available Builders
+
+- `DebianSlim(pythonVersion)` - Debian-based Python image
+- `UbuntuSlim(pythonVersion)` - Ubuntu-based Python image  
+- `Base(imageName)` - Start from any base image
+- `FromDockerfile(content)` - Use existing Dockerfile
+- `PythonDataScience(version)` - Pre-configured for data science
+- `PythonWeb(version)` - Pre-configured for web development
+- `NodeJS(version)` - Node.js development environment
+- `Go(version)` - Go development environment
+
+### Builder Methods
+
+All methods return the Image instance for chaining:
+
+- `PipInstall(packages)` - Install Python packages
+- `AptInstall(packages)` - Install system packages
+- `RunCommand(cmd)` - Run shell commands
+- `Env(key, value)` - Set environment variables
+- `Workdir(path)` - Set working directory
+- `Copy(src, dest)` - Copy files into image
+- `Expose(port)` - Expose container ports
+- `Label(key, value)` - Add metadata labels
+- `User(username)` - Set user for commands
+- `Entrypoint(cmd)` - Set container entrypoint
+- `Cmd(cmd)` - Set default command
+- `Build()` - Get the generated Dockerfile
 
 ## API Reference
 
