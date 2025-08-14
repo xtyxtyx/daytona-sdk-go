@@ -31,18 +31,19 @@ func main() {
 	fmt.Println("Initial build may take a few minutes, but subsequent uses will be faster.\n")
 	
 	createReq := &daytona.CreateSandboxRequest{
-		User:              daytona.StringPtr("daytona"),
-		Target:            daytona.StringPtr("eu"),
-		DockerfileContent: daytona.StringPtr(dockerfile),
-		Public:            daytona.BoolPtr(false),
-		Labels: map[string]string{
-			"created_by": "go_sdk",
-			"example":    "pyspark",
-			"stack":      "pyspark",
-		},
+		Target:            daytona.StringPtr("eu"), // Required: deployment region
+		DockerfileContent: daytona.StringPtr(dockerfile), // Custom image with PySpark
+		
+		// Optional: Environment variables for Spark
 		Env: map[string]string{
 			"PYSPARK_PYTHON": "python3",
 			"SPARK_LOCAL_IP": "127.0.0.1",
+		},
+		
+		// Optional: Labels for organization
+		Labels: map[string]string{
+			"example": "pyspark",
+			"stack":   "pyspark",
 		},
 	}
 

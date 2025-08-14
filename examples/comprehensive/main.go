@@ -44,21 +44,28 @@ func main() {
 	// Create a new sandbox
 	fmt.Println("\nCreating a new sandbox...")
 	createReq := &daytona.CreateSandboxRequest{
-		User:     daytona.StringPtr("daytona"),
-		Target:   daytona.StringPtr("eu"),
-		Snapshot: daytona.StringPtr("daytonaio/sandbox:0.4.3"),
-		Public:   daytona.BoolPtr(false),
-		Labels: map[string]string{
-			"project":     "sdk-demo",
-			"environment": "development",
-			"created_by":  "go-sdk",
-		},
+		Target: daytona.StringPtr("eu"), // Required: deployment region
+		
+		// Optional: Environment variables
 		Env: map[string]string{
 			"NODE_ENV":    "development",
 			"DEBUG":       "true",
 			"API_VERSION": "v1",
 		},
+		
+		// Optional: Metadata labels
+		Labels: map[string]string{
+			"project":     "sdk-demo",
+			"environment": "development",
+		},
+		
+		// Optional: Auto-stop configuration
 		AutoStopInterval: daytona.IntPtr(30), // Stop after 30 minutes of inactivity
+		
+		// Other optional fields:
+		// User:     daytona.StringPtr("daytona"),           // Defaults to account default
+		// Snapshot: daytona.StringPtr("daytonaio/sandbox:0.4.3"), // Defaults to latest
+		// Public:   daytona.BoolPtr(false),                 // Defaults to false
 	}
 
 	sandbox, err := client.CreateSandbox(ctx, createReq)

@@ -24,13 +24,11 @@ func main() {
 	// Create a new sandbox
 	fmt.Println("Creating sandbox...")
 	createReq := &daytona.CreateSandboxRequest{
-		User:     daytona.StringPtr("daytona"),
-		Target:   daytona.StringPtr("eu"),
-		Snapshot: daytona.StringPtr("daytonaio/sandbox:0.4.3"),
-		Public:   daytona.BoolPtr(false),
+		Target: daytona.StringPtr("eu"), // Required: deployment region
+		
+		// Optional: Add labels for organization
 		Labels: map[string]string{
-			"created_by": "go_sdk",
-			"example":    "csv_generation",
+			"example": "csv_generation",
 		},
 	}
 

@@ -18,7 +18,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	
+
 	fmt.Println("=== Daytona SDK Basic Example ===\n")
 
 	// List existing sandboxes
@@ -35,15 +35,18 @@ func main() {
 
 	// Create a new sandbox
 	fmt.Println("\nCreating a new sandbox...")
+	// Most fields are optional - only Target is typically required
 	createReq := &daytona.CreateSandboxRequest{
-		User:     daytona.StringPtr("daytona"),
-		Target:   daytona.StringPtr("eu"),
-		Snapshot: daytona.StringPtr("daytonaio/sandbox:0.4.3"),
-		Public:   daytona.BoolPtr(false),
-		Labels: map[string]string{
-			"created_by": "go_sdk",
-			"example":    "basic",
-		},
+		Target: daytona.StringPtr("eu"), // Required: deployment region (eu, us, etc.)
+		
+		// Optional fields (uncomment to use):
+		// User:     daytona.StringPtr("daytona"),           // Defaults to account default
+		// Snapshot: daytona.StringPtr("daytonaio/sandbox:0.4.3"), // Defaults to latest
+		// Public:   daytona.BoolPtr(false),                 // Defaults to false
+		// Labels: map[string]string{                        // Optional metadata
+		// 	"created_by": "go_sdk",
+		// 	"example":    "basic",
+		// },
 	}
 
 	sandbox, err := client.CreateSandbox(ctx, createReq)
@@ -66,7 +69,7 @@ func main() {
 	execReq := &daytona.ExecuteCommandRequest{
 		Command: "echo 'Hello from Daytona SDK!'",
 	}
-	
+
 	execResp, err := client.ExecuteCommand(ctx, sandbox.GetId(), execReq)
 	if err != nil {
 		log.Printf("Failed to execute command: %v\n", err)

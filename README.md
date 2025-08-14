@@ -14,8 +14,7 @@ The Daytona Go SDK provides a Go interface for interacting with the Daytona API,
 - 📁 **File Operations** - Upload, download, create folders, and manage files
 - 💻 **Command Execution** - Run commands and manage sessions
 - 🔧 **Custom Images** - Build custom sandbox environments with pre-installed packages
-- 🐍 **PySpark Support** - Examples for data processing with PySpark
-- 📊 **Data Generation** - Generate and analyze CSV data
+- 🔄 **Session Management** - Maintain stateful command execution contexts
 
 ## Installation
 
@@ -77,9 +76,12 @@ func main() {
     
     // Create a sandbox
     sandbox, err := client.CreateSandbox(ctx, &daytona.CreateSandboxRequest{
-        User:     daytona.StringPtr("daytona"),
-        Target:   daytona.StringPtr("eu"),
-        Snapshot: daytona.StringPtr("daytonaio/sandbox:0.4.3"),
+        Target: daytona.StringPtr("eu"), // Required: deployment region (eu, us, etc.)
+        
+        // All other fields are optional and have sensible defaults:
+        // User:     daytona.StringPtr("daytona"),  // Defaults to account default
+        // Snapshot: daytona.StringPtr("..."),      // Defaults to latest
+        // Public:   daytona.BoolPtr(false),        // Defaults to false
     })
     if err != nil {
         log.Fatal(err)
@@ -107,38 +109,21 @@ func main() {
 
 ## Examples
 
-The SDK includes comprehensive examples in the `examples/` directory. All examples automatically load the `.env` file from the project root.
+The SDK includes comprehensive examples in the `examples/` directory demonstrating:
 
-### Basic Operations
+- Basic sandbox operations and command execution
+- File upload, download, and manipulation
+- Custom Docker image building with pre-installed packages
+- Data generation and processing workflows
+- Session management for stateful operations
+- And much more...
+
+Run any example:
 ```bash
-# No need to source .env - it's loaded automatically!
+# Examples automatically load the .env file
 go run examples/basic/main.go
-```
-Creates a sandbox, executes commands, manages files, and cleans up.
-
-### File Operations
-```bash
-go run examples/file_operations/main.go
-```
-Demonstrates file creation, reading, writing, moving, and deletion.
-
-### CSV Data Generation
-```bash
-go run examples/csv_generation/main.go
-```
-Generates mock sales data, analyzes it, and exports results.
-
-### PySpark with Declarative Builder
-```bash
-go run examples/pyspark/main.go
-```
-Creates a custom image with PySpark pre-installed using the declarative builder pattern.
-
-### Comprehensive Example
-```bash
 go run examples/comprehensive/main.go
 ```
-Demonstrates all SDK features including sessions, search operations, and lifecycle management.
 
 ## Custom Images
 

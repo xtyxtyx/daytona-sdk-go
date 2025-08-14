@@ -24,13 +24,11 @@ func main() {
 	// Create a new sandbox for file operations
 	fmt.Println("Creating sandbox for file operations...")
 	createReq := &daytona.CreateSandboxRequest{
-		User:     daytona.StringPtr("daytona"),
-		Target:   daytona.StringPtr("eu"),
-		Snapshot: daytona.StringPtr("daytonaio/sandbox:0.4.3"),
-		Public:   daytona.BoolPtr(false),
+		Target: daytona.StringPtr("eu"), // Required: deployment region
+		
+		// Optional: Labels for organization
 		Labels: map[string]string{
-			"created_by": "go_sdk",
-			"example":    "file_operations",
+			"example": "file_operations",
 		},
 	}
 
