@@ -139,7 +139,11 @@ image := daytona.PythonDataScience("3.11")  // Includes numpy, pandas, scikit-le
 image := daytona.DebianSlim("3.11").
     AptInstall([]string{"postgresql-client"}).
     PipInstall([]string{"fastapi", "uvicorn", "sqlalchemy"}).
-    Env("APP_ENV", "production").
+    EnvVars(                           // Set multiple env vars at once
+        "APP_ENV", "production",
+        "PORT", "8000",
+        "WORKERS", "4",
+    ).
     Workdir("/app").
     Expose(8000)
 
@@ -168,7 +172,9 @@ All methods return the Image instance for chaining:
 - `PipInstall(packages)` - Install Python packages
 - `AptInstall(packages)` - Install system packages
 - `RunCommand(cmd)` - Run shell commands
-- `Env(key, value)` - Set environment variables
+- `Env(key, value)` - Set a single environment variable
+- `EnvVars(k1, v1, k2, v2, ...)` - Set multiple environment variables as pairs
+- `EnvMap(map[string]string)` - Set environment variables from a map
 - `Workdir(path)` - Set working directory
 - `Copy(src, dest)` - Copy files into image
 - `Expose(port)` - Expose container ports

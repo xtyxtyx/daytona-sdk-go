@@ -134,6 +134,19 @@ func (i *Image) EnvMap(vars map[string]string) *Image {
 	return i
 }
 
+// EnvVars sets multiple environment variables from key-value pairs
+// Usage: EnvVars("KEY1", "value1", "KEY2", "value2", ...)
+func (i *Image) EnvVars(kvPairs ...string) *Image {
+	if len(kvPairs)%2 != 0 {
+		// Ignore if not even number of arguments
+		return i
+	}
+	for j := 0; j < len(kvPairs); j += 2 {
+		i.Env(kvPairs[j], kvPairs[j+1])
+	}
+	return i
+}
+
 // Workdir sets the working directory
 func (i *Image) Workdir(path string) *Image {
 	i.dockerfile = append(i.dockerfile, fmt.Sprintf("WORKDIR %s", path))

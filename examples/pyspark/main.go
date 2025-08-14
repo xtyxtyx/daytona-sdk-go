@@ -26,7 +26,12 @@ func main() {
 	// Following the pattern from the TypeScript SDK's Image class
 	image := daytona.DebianSlim("3.11").
 		AptInstall([]string{"openjdk-17-jre-headless", "procps"}).
-		Env("JAVA_HOME", "/usr/lib/jvm/java-17-openjdk-amd64").
+		EnvVars(
+			"JAVA_HOME", "/usr/lib/jvm/java-17-openjdk-amd64",
+			"PYSPARK_PYTHON", "python3",
+			"SPARK_LOCAL_IP", "127.0.0.1",
+			"PYTHONUNBUFFERED", "1",
+		).
 		PipInstall([]string{
 			"pyspark==3.5.0",
 			"pandas",
@@ -44,12 +49,6 @@ func main() {
 	createReq := &daytona.CreateSandboxRequest{
 		Target:            daytona.StringPtr("eu"), // Required: deployment region
 		DockerfileContent: daytona.StringPtr(image.Build()), // Custom image with PySpark
-		
-		// Optional: Environment variables for Spark
-		Env: map[string]string{
-			"PYSPARK_PYTHON": "python3",
-			"SPARK_LOCAL_IP": "127.0.0.1",
-		},
 		
 		// Optional: Labels for organization
 		Labels: map[string]string{
