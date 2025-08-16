@@ -64,6 +64,27 @@ func (c *Client) WriteFile(ctx context.Context, sandboxID, path string, content 
 	return nil
 }
 
+// WriteFiles writes multiple files to the sandbox
+func (c *Client) WriteFiles(ctx context.Context, sandboxID string, files map[string]io.Reader) error {
+	if sandboxID == "" {
+		return fmt.Errorf("sandbox ID is required")
+	}
+
+	if len(files) == 0 {
+		return fmt.Errorf("files map cannot be empty")
+	}
+
+	// Upload the files using the bulk upload API
+	_, err := c.apiClient.ToolboxAPI.UploadFiles(ctx, sandboxID).
+		Files(files).
+		Execute()
+	if err != nil {
+		return fmt.Errorf("failed to upload files: %w", err)
+	}
+
+	return nil
+}
+
 // CreateFolder creates a directory in the sandbox
 func (c *Client) CreateFolder(ctx context.Context, sandboxID, path string) error {
 	if sandboxID == "" || path == "" {

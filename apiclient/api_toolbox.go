@@ -14,6 +14,7 @@ package apiclient
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -8157,11 +8158,17 @@ type ToolboxAPIUploadFilesRequest struct {
 	ApiService             ToolboxAPI
 	sandboxId              string
 	xDaytonaOrganizationID *string
+	files                  map[string]io.Reader
 }
 
 // Use with JWT to specify the organization ID
 func (r ToolboxAPIUploadFilesRequest) XDaytonaOrganizationID(xDaytonaOrganizationID string) ToolboxAPIUploadFilesRequest {
 	r.xDaytonaOrganizationID = &xDaytonaOrganizationID
+	return r
+}
+
+func (r ToolboxAPIUploadFilesRequest) Files(files map[string]io.Reader) ToolboxAPIUploadFilesRequest {
+	r.files = files
 	return r
 }
 
@@ -8226,6 +8233,38 @@ func (a *ToolboxAPIService) UploadFilesExecute(r ToolboxAPIUploadFilesRequest) (
 	if r.xDaytonaOrganizationID != nil {
 		parameterAddToHeaderOrQuery(localVarHeaderParams, "X-Daytona-Organization-ID", r.xDaytonaOrganizationID, "simple", "")
 	}
+
+	// Process files map and populate formFiles and formParams
+	if r.files != nil {
+		i := 0
+		for destinationPath, reader := range r.files {
+			if reader != nil {
+				// Add path parameter
+				localVarFormParams.Add(fmt.Sprintf("files[%d].path", i), destinationPath)
+
+				// Read file content
+				fileBytes, err := io.ReadAll(reader)
+				if err != nil {
+					return nil, err
+				}
+
+				// Close the reader if it implements io.Closer
+				if closer, ok := reader.(io.Closer); ok {
+					closer.Close()
+				}
+
+				// Add file content with destination path as filename
+				formFiles = append(formFiles, formFile{
+					fileBytes:    fileBytes,
+					fileName:     destinationPath,
+					formFileName: fmt.Sprintf("files[%d].file", i),
+				})
+
+				i++
+			}
+		}
+	}
+
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
